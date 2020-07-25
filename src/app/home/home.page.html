@@ -1,0 +1,57 @@
+<ion-header class="ion-no-border">
+    <ion-toolbar>
+        <ion-buttons slot="start">
+            <ion-button>
+                <ion-icon slot="icon-only" name="menu"></ion-icon>
+            </ion-button>
+        </ion-buttons>
+        <ion-title mode="ios" color="medium">NOW PLAYING</ion-title>
+        <ion-buttons slot="end">
+            <ion-button>
+                <ion-icon slot="icon-only" name="duplicate-outline"></ion-icon>
+            </ion-button>
+        </ion-buttons>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content>
+    <div class='playing-track'>
+        <h3 class="ion-no-margin">{{playingTrack.name}}</h3>
+        <p class="ion-no-margin">- {{playingTrack.artist}} -</p>
+    </div>
+
+    <div class="track-poster" [class.rotating]="isPlaying">
+        <img src="assets/images/cd.png" alt="">
+    </div>
+
+    <ion-item lines="none">
+        <ion-label>
+            <ion-range class="ion-no-padding" [value]="playedTime" [max]="playingTrack.duration"></ion-range>
+            <ion-grid class="ion-no-padding">
+                <ion-row>
+                    <ion-col>{{playedTime|date:'mm:ss'}}</ion-col>
+                    <ion-col class="col-right">{{playingTrack.duration|date:'mm:ss'}}</ion-col>
+                </ion-row>
+            </ion-grid>
+        </ion-label>
+    </ion-item>
+
+    <div class="controllers">
+        <ion-icon name="refresh-outline"></ion-icon>
+        <ion-icon name="play-skip-back-outline" (click)="previous()"></ion-icon>
+        <ion-icon *ngIf="!isPlaying" name="play-circle-outline" (click)="play()" class="play-pause"></ion-icon>
+        <ion-icon *ngIf="isPlaying" name="pause-circle-outline" (click)="pause()" class="play-pause"></ion-icon>
+        <ion-icon name="play-skip-forward-outline" (click)="next()"></ion-icon>
+        <ion-icon class="last" name="refresh-outline"></ion-icon>
+    </div>
+
+    <ion-list>
+        <ion-item lines="none" button *ngFor="let track of tracks; index as i" [class.active]="track.isPlaying"
+            (click)="selectTrackFromList(track, i)">
+            <ion-label>
+                <h4>{{track.name}}</h4>
+                <h4>{{track.duration|date:'mm:ss'}}</h4>
+            </ion-label>
+        </ion-item>
+    </ion-list>
+</ion-content>
